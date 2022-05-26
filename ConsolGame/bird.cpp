@@ -1,6 +1,7 @@
 #include "bird.h"
 
-Bird::Bird() : DynamicActor('~'), random_bird_direction(0, 1)
+Bird::Bird(u32 tiles_count, u32 update_time, IGameUpdater * game_updater) : 
+	DynamicActor('~', tiles_count, update_time, game_updater), random_bird_direction(0, 1)
 {
 }
 

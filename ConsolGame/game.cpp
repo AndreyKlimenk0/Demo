@@ -3,14 +3,18 @@
 
 static bool update_game;
 
-
-void Game::init(u32 tiles_count, u32 bird_update_time, u32 sign_update_time)
+Game::Game(u32 tiles_count, u32 bird_update_time, u32 sign_update_time) :
+	tiles_count(tiles_count), bird(tiles_count, bird_update_time, static_cast<IGameUpdater *>(this)), 
+	sign(tiles_count, sign_update_time, static_cast<IGameUpdater *>(this)), end_game(false)
 {
-	end_game = false;
 	update_game = true;
+}
 
-	bird.init(tiles_count, bird_update_time, nullptr, static_cast<IGameUpdater *>(this));
-	sign.init(tiles_count, sign_update_time, &bird, static_cast<IGameUpdater *>(this));
+void Game::init()
+{
+	generate_random_places_for_bird_and_sign();
+	bird.run_thread();
+	sign.run_thread();
 
 	tiles.resize(tiles_count);
 	drawn_tiles.resize(tiles_count);
@@ -88,4 +92,21 @@ void Game::output_tiles()
 		std::cout << drawn_tiles[i]->get_symbol();
 	}
 	std::cout << std::endl;
+}
+
+void Game::generate_random_places_for_bird_and_sign()
+{
+	std::uniform_int_distribution<std::mt19937::result_type> dist6(0, tiles_count - 1);
+
+	u32 bird_position = static_cast<u32>(dist6(rng));
+
+	bird.set_position(bird_position);
+	
+	u32 sign_position = static_cast<u32>(dist6(rng));
+
+	while (sign_position == bird_position) {
+		sign_position = static_cast<u32>(dist6(rng));
+	}
+
+	sign.set_position(sign_position);
 }

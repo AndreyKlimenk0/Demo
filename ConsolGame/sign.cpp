@@ -1,6 +1,7 @@
 #include "sign.h"
 
-Sign::Sign() : DynamicActor('x'), shot(false)
+
+Sign::Sign(u32 tiles_count, u32 update_time, IGameUpdater * game_updater) : DynamicActor('X', tiles_count, update_time, game_updater)
 {
 }
 

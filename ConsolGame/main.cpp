@@ -3,8 +3,8 @@
 
 int main()
 {
-	Game game;
-	game.init(20, 100, 100);
+	Game game(20, 100, 100);
+	game.init();
 	game.run();
 	return 0;
 }

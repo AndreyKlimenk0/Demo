@@ -25,7 +25,7 @@ public:
 */
 class Game : public IGameUpdater {
 public:
-	Game() {};
+	Game(u32 tiles_count, u32 bird_update_time, u32 sign_update_time);
 	/**
 	* @brief init bird and sign classed, fills tiles line.
 	* @param tells how many tiles will be in game.
@@ -33,7 +33,7 @@ public:
 	* @param through this time update sign position
 	* @return void
 	*/
-	void init(u32 tiles_count, u32 bird_update_time, u32 sign_update_time);
+	void init();
 	/**
 	* @brief run main loop where update bird and sign position on tiles line
 	* @return void
@@ -54,8 +54,10 @@ private:
 	*/
 	void output_tiles();
 
+	void generate_random_places_for_bird_and_sign();
+
 	bool end_game;
-	u32 bird_positin;
+	u32 tiles_count;
 	Bird bird;
 	Sign sign;
 	Goal goal;
@@ -64,5 +66,8 @@ private:
 
 	std::condition_variable cv;
 	std::mutex cv_mutex;
+
+	std::random_device dev;
+	std::mt19937 rng;
 };
 #endif
