@@ -151,10 +151,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="actor.cpp" />
+    <ClCompile Include="bird.cpp" />
+    <ClCompile Include="dynamic_actor.cpp" />
+    <ClCompile Include="goal.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sign.cpp" />
+    <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="actor.h" />
+    <ClInclude Include="bird.h" />
+    <ClInclude Include="dynamic_actor.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="goal.h" />
+    <ClInclude Include="helper.h" />
+    <ClInclude Include="sign.h" />
+    <ClInclude Include="tile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
