@@ -66,6 +66,7 @@ private:
 
 	std::condition_variable cv;
 	std::mutex cv_mutex;
+	std::mutex update_mutex;
 
 	std::random_device dev;
 	std::mt19937 rng;

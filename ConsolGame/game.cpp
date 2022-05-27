@@ -43,6 +43,8 @@ void Game::run()
 
 void Game::update(DynamicActor *actor)
 {
+	update_mutex.lock();
+
 	for (u32 i = 0; i < drawn_tiles.size(); i++) {
 		drawn_tiles[i] = dynamic_cast<Actor *>(&tiles.data()[i]);
 	}
@@ -77,6 +79,8 @@ void Game::update(DynamicActor *actor)
 
 	update_game = true;
 	cv.notify_one();
+
+	update_mutex.unlock();
 }
 
 void Game::shutdown()
