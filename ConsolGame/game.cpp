@@ -4,8 +4,8 @@
 static bool update_game;
 
 Game::Game(u32 tiles_count, u32 bird_update_time, u32 sign_update_time) :
-	tiles_count(tiles_count), bird(tiles_count, bird_update_time, static_cast<IGameUpdater *>(this)), 
-	sign(tiles_count, sign_update_time, static_cast<IGameUpdater *>(this)), end_game(false)
+	tiles_count(tiles_count), bird(bird_update_time, static_cast<IGameUpdater *>(this)), 
+	sign(sign_update_time, static_cast<IGameUpdater *>(this)), end_game(false)
 {
 	update_game = true;
 }
@@ -20,11 +20,11 @@ void Game::init()
 	drawn_tiles.resize(tiles_count);
 	
 	for (u32 i = 0; i < drawn_tiles.size(); i++) {
-		drawn_tiles[i] = dynamic_cast<Actor *>(&tiles.data()[i]);
+		drawn_tiles[i] = tiles.data()[i].get_symbol();
 	}
 	
-	drawn_tiles[bird.get_position()] = &bird;
-	drawn_tiles[sign.get_position()] = &sign;
+	drawn_tiles[bird.get_position()] = bird.get_symbol();
+	drawn_tiles[sign.get_position()] = sign.get_symbol();
 }
 
 void Game::run()
@@ -32,21 +32,38 @@ void Game::run()
 	std::unique_lock<std::mutex> lk(cv_mutex);
 	while (!end_game) {
 		cv.wait(lk, []{ return update_game; });
-		output_tiles();
+		view.diplay(drawn_tiles);
 		update_game = false;
 	}
 	shutdown();
-	std::cout << "You Win!!!" << std::endl;
+	view.diplay_win();
 	std::getchar();
 
 }
 
-void Game::update(DynamicActor *actor)
+void Game::update(DynamicActor *actor, Direction direction, u32 tiles_number)
 {
 	update_mutex.lock();
 
 	for (u32 i = 0; i < drawn_tiles.size(); i++) {
-		drawn_tiles[i] = dynamic_cast<Actor *>(&tiles.data()[i]);
+		drawn_tiles[i] = tiles.data()[i].get_symbol();
+	}
+
+	Sign *s = dynamic_cast<Sign *>(actor);
+	if (s) {
+		int ii = 20;
+	}
+
+	if (direction == LEFT_SIDE) {
+		int result = actor->get_position() - tiles_number;
+		if (result >= 0) {
+			actor->set_position(result);
+		}
+	} else if (direction == RIGHT_SIDE) {
+		u32 result = actor->get_position() + tiles_number;
+		if (result < tiles_count) {
+			actor->set_position(result);
+		}
 	}
 
 	Bird *temp_bird = dynamic_cast<Bird *>(actor);
@@ -55,11 +72,11 @@ void Game::update(DynamicActor *actor)
 			if (sign.was_shot()) {
 				end_game = true;
 			} else {
-				drawn_tiles[sign.get_position()] = &goal;
+				drawn_tiles[sign.get_position()] = goal.get_symbol();
 			}
 		} else {
-			drawn_tiles[bird.get_position()] = &bird;
-			drawn_tiles[sign.get_position()] = &sign;
+			drawn_tiles[bird.get_position()] = bird.get_symbol();
+			drawn_tiles[sign.get_position()] = sign.get_symbol();
 		}
 	}
 
@@ -69,11 +86,11 @@ void Game::update(DynamicActor *actor)
 			if (temp_sign->was_shot()) {
 				end_game = true;
 			} else {
-				drawn_tiles[bird.get_position()] = &goal;
+				drawn_tiles[bird.get_position()] = goal.get_symbol();
 			}
 		} else {
-			drawn_tiles[bird.get_position()] = &bird;
-			drawn_tiles[sign.get_position()] = &sign;
+			drawn_tiles[bird.get_position()] = bird.get_symbol();
+			drawn_tiles[sign.get_position()] = sign.get_symbol();
 		}
 	}
 
@@ -87,15 +104,6 @@ void Game::shutdown()
 {
 	bird.shutdown();
 	sign.shutdown();
-}
-
-void Game::output_tiles()
-{
-	system("cls");
-	for (u32 i = 0; i < drawn_tiles.size(); i++) {
-		std::cout << drawn_tiles[i]->get_symbol();
-	}
-	std::cout << std::endl;
 }
 
 void Game::generate_random_places_for_bird_and_sign()

@@ -12,12 +12,14 @@
 #include "sign.h"
 #include "goal.h"
 #include "helper.h"
+#include "view.h"
+
 
 class DynamicActor;
 
 class IGameUpdater {
 public:
-	virtual void update(DynamicActor *actor) = 0;
+	virtual void update(DynamicActor *actor, Direction direction, u32 tiles_number) = 0;
 };
 
 /**
@@ -40,7 +42,7 @@ public:
 	*/
 	void run();
 
-	void update(DynamicActor *actor);
+	void update(DynamicActor *actor, Direction direction, u32 tiles_number);
 
 private:
 	/**
@@ -52,7 +54,6 @@ private:
 	* @brief outputs tiles in a windows console
 	* @return void
 	*/
-	void output_tiles();
 
 	void generate_random_places_for_bird_and_sign();
 
@@ -62,7 +63,7 @@ private:
 	Sign sign;
 	Goal goal;
 	std::vector<Tile> tiles;
-	std::vector<Actor *> drawn_tiles;
+	std::vector<char> drawn_tiles;
 
 	std::condition_variable cv;
 	std::mutex cv_mutex;
@@ -70,5 +71,7 @@ private:
 
 	std::random_device dev;
 	std::mt19937 rng;
+
+	View view;
 };
 #endif

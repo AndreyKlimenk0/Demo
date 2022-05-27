@@ -2,7 +2,7 @@
 #include "game.h"
 
 
-DynamicActor::DynamicActor(u8 symbol, u32 tiles_count, u32 update_time, IGameUpdater *game_updater) : Actor(symbol), tiles_count(tiles_count),
+DynamicActor::DynamicActor(u8 symbol, u32 update_time, IGameUpdater *game_updater) : Actor(symbol),
 	update_time(update_time), game_updater(game_updater)
 {
 }
@@ -26,7 +26,9 @@ void DynamicActor::update()
 	std::unique_lock<std::mutex> lck(mtx);
 
 	while ((cv.wait_for(lck, update_time) == std::cv_status::timeout)) {
-		update_position();
-		game_updater->update(this);
+		Direction direction = NO_DIRECTION;
+		u32 tiles_number = 0;
+		update_position(direction, tiles_number);
+		game_updater->update(this, direction, tiles_number);
 	}
 }

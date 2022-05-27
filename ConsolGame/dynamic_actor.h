@@ -19,7 +19,7 @@ class IGameUpdater;
 */
 class DynamicActor : public Actor {
 public:
-	DynamicActor(u8 symbol, u32 tiles_count, u32 update_time, IGameUpdater *game_updater);
+	DynamicActor(u8 symbol, u32 update_time, IGameUpdater *game_updater);
 
 	void run_thread();
 	/**
@@ -34,7 +34,6 @@ public:
 	void update();
 
 protected:
-	u32 tiles_count;
 	IGameUpdater *game_updater;
 
 private:
@@ -43,7 +42,7 @@ private:
 	* the method is called by update method automatically through some time.
 	* @return void
 	*/
-	virtual void update_position() = 0;
+	virtual void update_position(Direction &direction, u32 &tiles_number) = 0;
 
 	std::thread tile_thread;
 	std::condition_variable cv;

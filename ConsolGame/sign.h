@@ -2,6 +2,7 @@
 #define SIGN_H
 
 #include "dynamic_actor.h"
+#include "helper.h"
 
 class IGameUpdater;
 
@@ -10,7 +11,7 @@ class IGameUpdater;
 */
 class Sign : public DynamicActor {
 public:
-	Sign(u32 tiles_count, u32 update_time, IGameUpdater *game_updater);
+	Sign(u32 update_time, IGameUpdater *game_updater);
 	/**
 	* @return true if user pressed space key, false if user did not press space key.
 	*/
@@ -20,7 +21,7 @@ private:
 	* @brief updates a position on one tile based on user input from keyboard (left or right arrow keys).
 	* @return void
 	*/
-	void update_position() override;
+	void update_position(Direction &direction, u32 &tiles_number) override;
 	bool shot;
 };
 

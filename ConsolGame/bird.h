@@ -3,6 +3,8 @@
 
 #include <random>
 #include "dynamic_actor.h"
+#include "helper.h"
+
 
 class IGameUpdater;
 /**
@@ -10,13 +12,13 @@ class IGameUpdater;
 */
 class Bird : public DynamicActor {
 public:
-	Bird(u32 tiles_count, u32 update_time, IGameUpdater *game_updater);
+	Bird(u32 update_time, IGameUpdater *game_updater);
 private:
 	/**
 	* @brief updates a position in one tile in random direction (left or right side).
 	* @return void
 	*/
-	void update_position() override;
+	void update_position(Direction &direction, u32 &tiles_number) override;
 
 	std::random_device dev;
 	std::mt19937 rng;
