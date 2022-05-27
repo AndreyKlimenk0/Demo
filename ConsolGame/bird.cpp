@@ -5,15 +5,13 @@ Bird::Bird(u32 update_time, IGameUpdater * game_updater) :
 {
 }
 
-void Bird::update_position(Direction &direction, u32 &tiles_number)
+void Bird::update_position(int &tiles_offset)
 {
 	u8 random_direction = static_cast<u8>(random_bird_direction(rng));
 	if (random_direction == 0) {
-		direction = LEFT_SIDE;
-		tiles_number = 1;
+		tiles_offset = -1;
 	}
 	else if (random_direction == 1) {
-		direction = RIGHT_SIDE;
-		tiles_number = 1;
+		tiles_offset = 1;
 	}
 }

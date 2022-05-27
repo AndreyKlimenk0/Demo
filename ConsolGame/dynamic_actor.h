@@ -42,7 +42,7 @@ private:
 	* the method is called by update method automatically through some time.
 	* @return void
 	*/
-	virtual void update_position(Direction &direction, u32 &tiles_number) = 0;
+	virtual void update_position(int &tiles_offset) = 0;
 
 	std::thread tile_thread;
 	std::condition_variable cv;

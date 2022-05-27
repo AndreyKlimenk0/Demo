@@ -21,7 +21,7 @@ private:
 	* @brief updates a position on one tile based on user input from keyboard (left or right arrow keys).
 	* @return void
 	*/
-	void update_position(Direction &direction, u32 &tiles_number) override;
+	void update_position(int &tiles_offset) override;
 	bool shot;
 };
 

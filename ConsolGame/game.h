@@ -19,7 +19,7 @@ class DynamicActor;
 
 class IGameUpdater {
 public:
-	virtual void update(DynamicActor *actor, Direction direction, u32 tiles_number) = 0;
+	virtual void update(DynamicActor *actor, int tiles_offset) = 0;
 };
 
 /**
@@ -42,7 +42,7 @@ public:
 	*/
 	void run();
 
-	void update(DynamicActor *actor, Direction direction, u32 tiles_number);
+	void update(DynamicActor *actor, int tiles_offset);
 
 private:
 	/**
@@ -59,6 +59,8 @@ private:
 
 	bool end_game;
 	u32 tiles_count;
+	u32 bird_position;
+	u32 sign_position;
 	Bird bird;
 	Sign sign;
 	Goal goal;

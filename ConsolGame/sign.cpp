@@ -10,16 +10,14 @@ bool Sign::was_shot() const
 	return shot;
 }
 
-void Sign::update_position(Direction &direction, u32 &tiles_number)
+void Sign::update_position(int &tiles_offset)
 {
 	if (GetAsyncKeyState(VK_LEFT)) {
-		direction = LEFT_SIDE;
-		tiles_number = 1;
+		tiles_offset = -1;
 	}
 
 	if (GetAsyncKeyState(VK_RIGHT)) {
-		direction = RIGHT_SIDE;
-		tiles_number = 1;
+		tiles_offset = 1;
 	}
 
 	if (GetAsyncKeyState(VK_SPACE)) {

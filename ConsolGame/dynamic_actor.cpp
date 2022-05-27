@@ -26,9 +26,8 @@ void DynamicActor::update()
 	std::unique_lock<std::mutex> lck(mtx);
 
 	while ((cv.wait_for(lck, update_time) == std::cv_status::timeout)) {
-		Direction direction = NO_DIRECTION;
-		u32 tiles_number = 0;
-		update_position(direction, tiles_number);
-		game_updater->update(this, direction, tiles_number);
+		int tiles_offset = 0;
+		update_position(tiles_offset);
+		game_updater->update(this, tiles_offset);
 	}
 }

@@ -18,7 +18,7 @@ private:
 	* @brief updates a position in one tile in random direction (left or right side).
 	* @return void
 	*/
-	void update_position(Direction &direction, u32 &tiles_number) override;
+	void update_position(int &tiles_offset) override;
 
 	std::random_device dev;
 	std::mt19937 rng;
